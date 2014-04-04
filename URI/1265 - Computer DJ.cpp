@@ -58,7 +58,9 @@ int main()
                 cin >> q;
                 cout << solution( q, leng(q) ) << endl;
             }
-        }else{
+        }
+        else
+        {
             cin >> songs[0];
             int q;
             for( int i=0; i<Q; i++ )
