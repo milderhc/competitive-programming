@@ -8,17 +8,15 @@ using namespace std;
 int s[25];
 string songs[26];
 
-int leng( int number )
-{
+int leng( int number ) {
     int i = 1;
     while( number > s[i++] );
     return i-1;
 }
 
 int N, Q;
-string solution( int number, int l )
-{
-    if( l==1 )
+string solution( int number, int l ) {
+    if( l == 1 )
         return songs[ number-1 ];
     int x = (s[l]-s[l-1])/l;
     
@@ -34,18 +32,14 @@ string solution( int number, int l )
     return solution(number,l-1);
 }
 
-int main()
-{
-    while( cin >> N >> Q )
-    {
+int main() {
+    while( cin >> N >> Q ) {
         if( !N && !Q )
             break;
-        if( N > 1 )
-        {
+        if( N > 1 ) {
             long long sum = 0;
             int i=0;
-            while( sum <= 100000000 )
-            {
+            while( sum <= 100000000 ) {
                 sum += pow(double(N),i)*(i);
                 s[i] = sum;
                 i++;
@@ -53,18 +47,14 @@ int main()
             for( int i=0; i<N; i++ )
                 cin >> songs[i];
             int q;
-            for( int i=0; i<Q; i++ )
-            {
+            for( int i=0; i<Q; i++ ) {
                 cin >> q;
                 cout << solution( q, leng(q) ) << endl;
             }
-        }
-        else
-        {
+        } else {
             cin >> songs[0];
             int q;
-            for( int i=0; i<Q; i++ )
-            {
+            for( int i=0; i<Q; i++ ) {
                 cin >> q;
                 cout << songs[0] << endl;
             }       
