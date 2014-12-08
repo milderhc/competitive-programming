@@ -1,39 +1,24 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-struct fraction{
-    int n,d;
-    fraction( int a, int b ): n(a), d(b){};
-    fraction(){}
-};
-
 vector<int> ans;
-void g( fraction f )
-{
-    if( f.d == 1 )
-	{ 
-	  	ans.push_back( f.n ); 
- 		return; 
-    }
-	ans.push_back( f.n/f.d );
-    g( fraction( f.d, (f.n%f.d) ) );
+void f ( int a, int b ) {
+    if ( b == 0 ) return;
+    ans.push_back(a/b);
+    f( b, a%b );
 }
 
-int main()
-{
-   int a, b;
-   while( cin >> a >> b )
-   {
-       g( fraction( a, b ) );
-       cout << "[" << ans[0] << ";";
-       for( int i=1; i<ans.size(); i++ )
-	   {
-           cout << ans[i];
-           if( i < ans.size()-1 ) cout << ",";
-           else cout <<"]" << endl;
-       }
-       ans.clear();
-   }
+int main ( ) {
+    int a, b;
+    while ( cin >> a >> b ) {
+        ans = vector<int>();
+        f(a, b);
+        cout << '[' << ans[0] << ';';
+        for ( int i = 1; i < ans.size(); i++ ) {
+            if ( i > 1 ) cout << ',';
+            cout << ans[i];
+        }
+        cout << "]\n";
+    }
 }
