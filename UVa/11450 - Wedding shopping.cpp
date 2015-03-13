@@ -1,60 +1,37 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <climits>
-#include <cstring>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-const int MAX = 20;
-vector<int> garments[MAX];
-int dp[MAX][205];
-int N, M, C, K;
+const int MAX_M = 205, MAX_C = 25;
+int D[MAX_C][MAX_M], K[MAX_C], price[MAX_C][MAX_C];
 
-int find_best ( int remaining, int index ) {
-
-    if ( dp[index][remaining] == -1 ) {
-
-        if ( index == C )
-            return M - remaining;
-
-        if ( remaining < 0 )
-            return -1;
-
-        int result = -1;
-        for ( int i = 0; i < garments[index].size(); i++ ) {
-            int tmp = find_best( remaining - garments[index][i], index + 1 );
-            if ( tmp <= M ) result = max( result, tmp );
-        }
-
-        dp[index][remaining] = result;
-    }
-
-    return dp[index][remaining];
-}
-
-int main ( ) {
-
-    cin >> N;
-    while ( N-- ) {
-
-        cin >> M >> C;
-        memset( dp, -1, sizeof(dp) );
-
-        for ( int i = 0; i < C; i++ ) {
-            cin >> K;
-            int tmp;
-
-            garments[i].resize(0);
-            for ( int j = 0; j < K; j++ ) {
-                cin >> tmp;
-                garments[i].push_back(tmp);
-            }
-        }
-
-        int answer = find_best( M, 0 );
-
-        if ( answer > 0 ) cout << answer << '\n';
-        else              cout << "no solution\n";
-    }
+int main() {
+	int N, M, C;
+	cin >> N;
+	while ( N-- ) {
+		cin >> M >> C;
+		memset(D, 0, sizeof(D));
+		for ( int i = 0; i < C; ++i ) {
+			cin >> K[i];
+			for ( int j = 0; j < K[i]; ++j )
+				cin >> price[i][j];
+		}
+		for ( int i = 0; i < K[0]; ++i )
+			D[0][price[0][i]] = 1;
+		for ( int i = 1; i < C; ++i )
+			for ( int p = 0; p <= M; ++p ) {
+				if ( D[i - 1][p] == 0 ) continue;
+				for ( int j = 0; j < K[i]; ++j ) {
+					int next_price = p + price[i][j];
+					if ( next_price <= M )
+						D[i][next_price] = 1;
+				}
+			}
+		int ans = -1;
+		for ( int i = 0; i < MAX_M; ++i )
+			if ( D[C - 1][i] == 1 && i <= M )
+				ans = i;
+		if ( ans != -1 ) cout << ans << '\n';
+		else 			 cout << "no solution\n";
+	}
 }
